@@ -21,11 +21,9 @@ COPY --from=builder /root/.local /home/appuser/.local
 WORKDIR /app
 
 # Copy application code (explicit files/dirs to avoid sensitive data)
-COPY --chown=appuser:appuser app/ ./app/
-COPY --chown=appuser:appuser worker.py ./
+COPY --chown=appuser:appuser --chmod=755 app/ ./app/
+COPY --chown=appuser:appuser --chmod=644 worker.py ./
 
-# Remove write permissions for security
-RUN chmod -R a-w /app
 
 # Update PATH to include user-installed packages
 ENV PATH=/home/appuser/.local/bin:$PATH
